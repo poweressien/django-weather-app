@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #71b7e6, #9be2d9);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: 70%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+        img {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌤️ Weather App</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+        
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        {% if weather_data %}
+            <div class="weather-info">
+                <h2>{{ weather_data.city }}, {{ weather_data.country }}</h2>
+                <img src="http://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="weather icon">
+                <h3>{{ weather_data.temperature }}°C</h3>
+                <p>{{ weather_data.description|title }}</p>
+                <p>Humidity: {{ weather_data.humidity }}%</p>
+                <p>Wind Speed: {{ weather_data.wind_speed }} m/s</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
